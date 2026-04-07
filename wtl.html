@@ -103,6 +103,8 @@
             <select name="" id="lease">
                 <option value="leaseaproperty">WTL</option>
                 <option value="leasemonarch">WTB</option>
+                <option value="saleaproperty">FOR LEASE</option>
+                <option value="salemonarch">FOR SALE</option>
             </select>
             <input type="text" id="color" value="white">
             <select name="" id="font_color">
@@ -226,7 +228,18 @@
 
 
             } else if (lease === "saleaproperty") {
-                ctx.drawImage(saleImg, 0, 0, 1080, 1080);
+                if (glow == "yes") {
+                    ctx.shadowColor = "white";
+                    ctx.shadowBlur = 10;   // glow color
+                }
+                ctx.fillStyle = font_color;
+                ctx.textAlign = "center";
+                ctx.font = "bold 80px bold";
+
+
+                ctx.fillText("FOR LEASE", (canvas.width / 2) + 20, 200);
+                ctx.drawImage(img2, 280, 133, 80, 80);
+
             } else if (lease === "leasemonarch") {
                 if (glow == "yes") {
                     ctx.shadowColor = "white";
@@ -243,7 +256,17 @@
                     ctx.drawImage(img2, 105, 133, 80, 80);
                 }
             } else if (lease === "salemonarch") {
-                ctx.dr = awImage(salemonarch, 0, 0, 1080, 1080);
+                if (glow == "yes") {
+                    ctx.shadowColor = "white";
+                    ctx.shadowBlur = 10;   // glow color
+                }
+                ctx.fillStyle = font_color;
+                ctx.textAlign = "center";
+                ctx.font = "bold 80px bold";
+
+
+                ctx.fillText("FOR SALE", (canvas.width / 2) + 20, 200);
+                ctx.drawImage(img2, 300, 133, 80, 80);
             }
 
             // Circle center and radius
