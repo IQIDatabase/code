@@ -117,7 +117,8 @@
             </select>
             <select name="" id="exclamation">
                 <option value="yes" selected>Enable Ex</option>
-                <option value="no">Disable Ex</option>
+                <option value="yes f" selected>Enable fire</option>
+                <option value="no">Disable</option>
             </select>
         </div>
         <br>
@@ -141,6 +142,7 @@
         const ctx = canvas.getContext("2d");
         const img = new Image();
         const img2 = new Image();
+        const img3 = new Image();
         const newImg = new Image();
         const saleImg = new Image();
         const leasemonarch = new Image();
@@ -152,6 +154,7 @@
         leasemonarch.src = "https://i.ibb.co/JrMSKGY/lease.png";
         salemonarch.src = "https://i.ibb.co/P99ss8N/sale.png";
         img2.src = 'https://emojis.wiki/emoji-pics/whatsapp/double-exclamation-mark-whatsapp.webp';
+        img3.src = 'https://images.emojiterra.com/google/android-11/512px/1f525.png';
         img.onload = () => {
             let color_me = getID("color").value
             if (color_me.toLowerCase() != "white") {
@@ -214,7 +217,7 @@
                 ctx.fillStyle = font_color;
                 ctx.textAlign = "center";
                 ctx.font = "bold 80px bold";
-                if (exclamation == "no") {
+                if (exclamation.includes("no")) {
                     ctx.fillText("WTL | WANT TO LEASE", (canvas.width / 2), 200);
                     let color_me = getID("color").value
 
@@ -222,7 +225,12 @@
                     ctx.fillText("WTL | WANT TO LEASE", (canvas.width / 2) + 20, 200);
                     let color_me = getID("color").value
                     color_me = color_me.toString().startsWith("#") ? color_me : "#" + color_me
-                    ctx.drawImage(img2, 75, 133, 80, 80);
+                    if (exclamation == "yes f") {
+                        ctx.drawImage(img3, 75, 133, 80, 80);
+                    } else {
+                        ctx.drawImage(img2, 75, 133, 80, 80);
+                    }
+
                 }
 
 
@@ -237,8 +245,9 @@
                 ctx.font = "bold 80px bold";
 
 
-                ctx.fillText("FOR LEASE", (canvas.width / 2) + 20, 200);
-                ctx.drawImage(img2, 280, 133, 80, 80);
+                ctx.fillText("FOR LEASE", (canvas.width / 2), 200);
+                ctx.drawImage(img3, 260, 133, 80, 80);
+                ctx.drawImage(img3, 740, 133, 80, 80)
 
             } else if (lease === "leasemonarch") {
                 if (glow == "yes") {
@@ -249,11 +258,15 @@
                 ctx.textAlign = "center";
                 ctx.font = "bold 80px bold";
 
-                if (exclamation == "no") {
+                if (exclamation.includes("no")) {
                     ctx.fillText("WTB | WANT TO BUY", canvas.width / 2, 200);
                 } else {
                     ctx.fillText("WTB | WANT TO BUY", (canvas.width / 2) + 20, 200);
-                    ctx.drawImage(img2, 105, 133, 80, 80);
+                    if (exclamation == "yes f") {
+                        ctx.drawImage(img3, 105, 133, 80, 80);
+                    } else {
+                        ctx.drawImage(img2, 105, 133, 80, 80);
+                    }
                 }
             } else if (lease === "salemonarch") {
                 if (glow == "yes") {
@@ -265,8 +278,9 @@
                 ctx.font = "bold 80px bold";
 
 
-                ctx.fillText("FOR SALE", (canvas.width / 2) + 20, 200);
-                ctx.drawImage(img2, 300, 133, 80, 80);
+                ctx.fillText("FOR SALE", (canvas.width / 2), 200);
+                ctx.drawImage(img3, 280, 133, 80, 80);
+                ctx.drawImage(img3, 720, 133, 80, 80)
             }
 
             // Circle center and radius
