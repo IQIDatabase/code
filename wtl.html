@@ -60,6 +60,8 @@
             cursor: pointer;
         }
 
+
+
         .controls input[type="text"],
         .controls select {
             margin: 10px 10px;
@@ -97,18 +99,33 @@
         <br>
         <textarea id="bldg" placeholder="Building"></textarea>
 
-        <select name="" id="lease">
-            <option value="leaseaproperty">WTL</option>
-            <option value="leasemonarch">WTB</option>
-            <option value="saleaproperty">A property Sale</option>
-            <option value="salemonarch">Monarch Sale</option>
-        </select>
+        <div class="flex">
+            <select name="" id="lease">
+                <option value="leaseaproperty">WTL</option>
+                <option value="leasemonarch">WTB</option>
+            </select>
+            <input type="text" id="color" value="white">
+            <select name="" id="font_color">
+                <option value="black" selected>BLACK FONT</option>
+                <option value="white">WHITE FONT</option>
+            </select>
+            <select name="" id="glow">
+                <option value="yes">Yes Glow</option>
+                <option value="no" selected>No Glow</option>
+            </select>
+            <select name="" id="exclamation">
+                <option value="yes" selected>Enable Ex</option>
+                <option value="no">Disable Ex</option>
+            </select>
+        </div>
         <br>
         <button id="generate">Generate</button>
         <button id="RESET">RESET</button>
+
     </div>
     <canvas id="canvas"></canvas><br><br>
     <textarea id="except">with,sqm,a,an,the,and,but,or,for,nor,on,in,with,if,at,by,to,of,up</textarea>
+
     <script>
         function getID(id) {
             return document.getElementById(id);
@@ -134,10 +151,15 @@
         salemonarch.src = "https://i.ibb.co/P99ss8N/sale.png";
         img2.src = 'https://emojis.wiki/emoji-pics/whatsapp/double-exclamation-mark-whatsapp.webp';
         img.onload = () => {
+            let color_me = getID("color").value
+            if (color_me.toLowerCase() != "white") {
+                color_me = color_me.toString().startsWith("#") ? color_me : "#" + color_me
+            }
+
             canvas.width = 1080;
             canvas.height = 650;
             // ctx.drawImage(img, 0, 0, 1080, 1080);
-            ctx.fillStyle = 'white';
+            ctx.fillStyle = color_me;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             // ctx.drawImage(img2, 36, 200 - 36, 72, 72);
         };
@@ -153,15 +175,26 @@
             await document.fonts.load('80px "light"');
         }
         async function generateImg() {
+            let white_status = true
             await drawText()
             getImgXHeight(fixWidth)
             const bldg = getID("bldg").value.toString().toUpperCase().trim();
             const lease = getID("lease").value.trim();
-
+            const font_color = getID("font_color").value.trim();
+            const glow = getID("glow").value.trim();
+            const exclamation = getID("exclamation").value.trim();
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'white';
+            let color_me = getID("color").value
+            if (color_me.toLowerCase() != "white" && color_me.toLowerCase() != "black") {
+                white_status = false
+                color_me = color_me.toString().startsWith("#") ? color_me : "#" + color_me
+            }
+
+
+            ctx.fillStyle = color_me;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // ctx.drawImage(img2, 75, 133, 80, 80);
 
             const newWidth = fixWidth;
             const aspectRatio = newImg.width / newImg.height;
@@ -172,25 +205,45 @@
 
             if (lease === "leaseaproperty") {
                 // ctx.drawImage(img, 0, 0, 1080, 1080);
-
-                ctx.fillStyle = "black";
+                if (glow == "yes") {
+                    ctx.shadowColor = "white";
+                    ctx.shadowBlur = 10;   // glow color
+                }
+                ctx.fillStyle = font_color;
                 ctx.textAlign = "center";
                 ctx.font = "bold 80px bold";
-                ctx.fillText("WTL | WANT TO LEASE", (canvas.width / 2) + 20, 200);
+                if (exclamation == "no") {
+                    ctx.fillText("WTL | WANT TO LEASE", (canvas.width / 2), 200);
+                    let color_me = getID("color").value
 
-                ctx.drawImage(img2, 75, 133, 80, 80);
+                } else {
+                    ctx.fillText("WTL | WANT TO LEASE", (canvas.width / 2) + 20, 200);
+                    let color_me = getID("color").value
+                    color_me = color_me.toString().startsWith("#") ? color_me : "#" + color_me
+                    ctx.drawImage(img2, 75, 133, 80, 80);
+                }
+
 
 
             } else if (lease === "saleaproperty") {
                 ctx.drawImage(saleImg, 0, 0, 1080, 1080);
             } else if (lease === "leasemonarch") {
-                ctx.fillStyle = "black";
+                if (glow == "yes") {
+                    ctx.shadowColor = "white";
+                    ctx.shadowBlur = 10;   // glow color
+                }
+                ctx.fillStyle = font_color;
                 ctx.textAlign = "center";
                 ctx.font = "bold 80px bold";
-                ctx.fillText("WTB | WANT TO BUY", (canvas.width / 2) + 20, 200);
-                ctx.drawImage(img2, 105, 133, 80, 80);
+
+                if (exclamation == "no") {
+                    ctx.fillText("WTB | WANT TO BUY", canvas.width / 2, 200);
+                } else {
+                    ctx.fillText("WTB | WANT TO BUY", (canvas.width / 2) + 20, 200);
+                    ctx.drawImage(img2, 105, 133, 80, 80);
+                }
             } else if (lease === "salemonarch") {
-                ctx.drawImage(salemonarch, 0, 0, 1080, 1080);
+                ctx.dr = awImage(salemonarch, 0, 0, 1080, 1080);
             }
 
             // Circle center and radius
@@ -198,8 +251,12 @@
             // Optional: remove shadow for other drawings
             ctx.shadowBlur = 0;
             ctx.shadowColor = "transparent";
+            if (glow == "yes") {
+                ctx.shadowColor = "white";
+                ctx.shadowBlur = 10;   // glow color
+            }
 
-            ctx.fillStyle = "black";
+
             ctx.textAlign = "center";
             ctx.font = "bold 45px light";
 
@@ -207,6 +264,7 @@
             const lines = bldg.split('\n');
             let y = 300;
             if (lines.length >= 5) {
+
                 y = 280;
             }
             // Draw each line
@@ -238,6 +296,7 @@
             const lease = getID("lease").value = "";
             const price = getID("price").value = "";
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
             imageX = 0;
             imageY = 0;
             getID("inputImage").value = null
