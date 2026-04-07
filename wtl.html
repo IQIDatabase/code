@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Generator</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap">
+    <style>
+        @font-face {
+            font-family: 'light';
+            src: url('fonts/SFNSDisplay-Thin.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'bold';
+            src: url('fonts/SFNSDisplay-Semibold.otf') format('opentype');
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #bldg,
+        #except {
+            width: 800px;
+            font-size: 20px;
+            height: 100px;
+        }
+
+        body {
+            zoom: 0.5;
+            font-family: "Montserrat", sans-serif;
+            font-weight: 700;
+            text-align: center;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        canvas {
+            /* background-color: rgb(0, 0, 0); */
+            background-color: rgb(255, 255, 255);
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+        }
+
+        .controls {
+            margin-top: 10px;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .controls input[type="text"],
+        .controls select {
+            margin: 10px 10px;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .heightMonitor {
+            position: absolute;
+            top: 10px;
+            font-size: 50px;
+            left: 10px;
+        }
+
+        #RESET {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Real Estate Generator</h1>
+    <div class="heightMonitor" id="heightMonitor">0</div>
+    <div class="controls">
+        <button id="left">Left</button>
+        <button id="right">Right</button>
+        <button id="up">Up</button>
+        <button id="down">Down</button>
+        <button id="small">Smaller</button>
+        <button id="big">Larger</button>
+        <br>
+        <textarea id="bldg" placeholder="Building"></textarea>
+
+        <select name="" id="lease">
+            <option value="leaseaproperty">WTL</option>
+            <option value="leasemonarch">WTB</option>
+            <option value="saleaproperty">A property Sale</option>
+            <option value="salemonarch">Monarch Sale</option>
+        </select>
+        <br>
+        <button id="generate">Generate</button>
+        <button id="RESET">RESET</button>
+    </div>
+    <canvas id="canvas"></canvas><br><br>
+    <textarea id="except">with,sqm,a,an,the,and,but,or,for,nor,on,in,with,if,at,by,to,of,up</textarea>
+    <script>
+        function getID(id) {
+            return document.getElementById(id);
+        }
+
+        let imageX = 0;
+        let imageY = 0;
+        let fixWidth = 1130;
+
+        const canvas = getID("canvas");
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        const img2 = new Image();
+        const newImg = new Image();
+        const saleImg = new Image();
+        const leasemonarch = new Image();
+        const salemonarch = new Image();
+        img.width = "1080";
+
+        img.src = "https://raw.githubusercontent.com/IQIDatabase/images/refs/heads/main/WTL.png";
+        saleImg.src = "https://i.ibb.co/ypswQxx/FOR-SALE.png";
+        leasemonarch.src = "https://i.ibb.co/JrMSKGY/lease.png";
+        salemonarch.src = "https://i.ibb.co/P99ss8N/sale.png";
+        img2.src = 'https://emojis.wiki/emoji-pics/whatsapp/double-exclamation-mark-whatsapp.webp';
+        img.onload = () => {
+            canvas.width = 1080;
+            canvas.height = 650;
+            // ctx.drawImage(img, 0, 0, 1080, 1080);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // ctx.drawImage(img2, 36, 200 - 36, 72, 72);
+        };
+
+        getID("generate").addEventListener("click", () => {
+            generateImg();
+        });
+
+
+
+        async function drawText() {
+            await document.fonts.load('80px "bold"');
+            await document.fonts.load('80px "light"');
+        }
+        async function generateImg() {
+            await drawText()
+            getImgXHeight(fixWidth)
+            const bldg = getID("bldg").value.toString().toUpperCase().trim();
+            const lease = getID("lease").value.trim();
+
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const newWidth = fixWidth;
+            const aspectRatio = newImg.width / newImg.height;
+            const newHeight = newWidth / aspectRatio;
+
+            ctx.drawImage(newImg, imageX, imageY, newWidth, newHeight);
+
+
+            if (lease === "leaseaproperty") {
+                // ctx.drawImage(img, 0, 0, 1080, 1080);
+
+                ctx.fillStyle = "black";
+                ctx.textAlign = "center";
+                ctx.font = "bold 80px bold";
+                ctx.fillText("WTL | WANT TO LEASE", (canvas.width / 2) + 20, 200);
+
+                ctx.drawImage(img2, 75, 133, 80, 80);
+
+
+            } else if (lease === "saleaproperty") {
+                ctx.drawImage(saleImg, 0, 0, 1080, 1080);
+            } else if (lease === "leasemonarch") {
+                ctx.fillStyle = "black";
+                ctx.textAlign = "center";
+                ctx.font = "bold 80px bold";
+                ctx.fillText("WTB | WANT TO BUY", (canvas.width / 2) + 20, 200);
+            } else if (lease === "salemonarch") {
+                ctx.drawImage(salemonarch, 0, 0, 1080, 1080);
+            }
+
+            // Circle center and radius
+
+            // Optional: remove shadow for other drawings
+            ctx.shadowBlur = 0;
+            ctx.shadowColor = "transparent";
+
+            ctx.fillStyle = "black";
+            ctx.textAlign = "center";
+            ctx.font = "bold 45px light";
+
+            // Split by line breaks
+            const lines = bldg.split('\n');
+            let y = 300;
+            if (lines.length >= 5) {
+                y = 280;
+            }
+            // Draw each line
+            // starting Y position
+            const lineHeight = 65;   // space between lines
+            lines.forEach(line => {
+                ctx.fillText("• " + toSmartTitleCase(line), canvas.width / 2, y);
+                y += lineHeight;
+            });
+        }
+
+        function getImgXHeight(fixWidth) {
+            getID("heightMonitor").innerHTML = fixWidth
+            if (fixWidth >= 1130) {
+                getID("heightMonitor").style.color = "blue"
+            } else {
+                getID("heightMonitor").style.color = "red"
+            }
+        }
+
+
+        getID("RESET").addEventListener("click", resetSettings);
+
+        function resetSettings() {
+            const bldg = getID("bldg").value = "";
+            const br = getID("br").value = "";
+            const tb = getID("tb").value = "";
+            const sqm = getID("sqm").value = "";
+            const lease = getID("lease").value = "";
+            const price = getID("price").value = "";
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            imageX = 0;
+            imageY = 0;
+            getID("inputImage").value = null
+            newImg.src = "";
+        }
+
+
+        function toSmartTitleCase(str) {
+            let smallWords = document.getElementById('except').value
+
+            smallWords = smallWords.split(",").map(e => {
+                return e.trim()
+            })
+
+            return str
+                .toLowerCase()
+                .split(' ')
+                .map((word, index) => {
+                    // Always capitalize the first word
+                    if (index === 0 && !smallWords.includes(word)) return word.charAt(0).toUpperCase() + word.slice(1);
+                    // Capitalize if NOT in smallWords
+                    if (!smallWords.includes(word)) return word.charAt(0).toUpperCase() + word.slice(1);
+                    // Else keep lowercase
+                    return word;
+                })
+                .join(' ');
+        }
+
+        window.addEventListener("keypress", e => {
+            let key_click = (e.key).toLowerCase()
+            if (key_click == "enter") {
+                generateImg()
+            }
+        })
+    </script>
+</body>
+
+</html>
