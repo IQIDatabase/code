@@ -94,8 +94,10 @@
         <button id="right">Right</button>
         <button id="up">Up</button>
         <button id="down">Down</button>
-        <button id="small">Smaller</button>
-        <button id="big">Larger</button>
+        <button id="small">Smaller H</button>
+        <button id="big">Larger H</button>
+        <button id="small2">Smaller W</button>
+        <button id="big2">Larger W</button>
         <br>
         <textarea id="bldg" placeholder="Building"></textarea>
 
@@ -136,7 +138,8 @@
 
         let imageX = 0;
         let imageY = 0;
-        let fixWidth = 1130;
+        let fixWidth = 1000;
+        let fixHeight = 1050;
 
         const canvas = getID("canvas");
         const ctx = canvas.getContext("2d");
@@ -161,8 +164,8 @@
                 color_me = color_me.toString().startsWith("#") ? color_me : "#" + color_me
             }
 
-            canvas.width = 1080;
-            canvas.height = 650;
+            canvas.width = 1050;
+            canvas.height = 1000;
             // ctx.drawImage(img, 0, 0, 1080, 1080);
             ctx.fillStyle = color_me;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -183,13 +186,14 @@
             let white_status = true
             await drawText()
             getImgXHeight(fixWidth)
+            getImgYHeight(fixHeight)
             const bldg = getID("bldg").value.toString().toUpperCase().trim();
             const lease = getID("lease").value.trim();
             const font_color = getID("font_color").value.trim();
             const glow = getID("glow").value.trim();
             const exclamation = getID("exclamation").value.trim();
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, fixWidth);
             let color_me = getID("color").value
             if (color_me.toLowerCase() != "white" && color_me.toLowerCase() != "black") {
                 white_status = false
@@ -197,15 +201,17 @@
             }
 
 
+            canvas.height = fixWidth
+            canvas.width = fixHeight
             ctx.fillStyle = color_me;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             // ctx.drawImage(img2, 75, 133, 80, 80);
 
-            const newWidth = fixWidth;
-            const aspectRatio = newImg.width / newImg.height;
-            const newHeight = newWidth / aspectRatio;
+            // const newWidth = 1050;
+            // const aspectRatio = newImg.width / newImg.height;
+            // const newHeight = newWidth / aspectRatio;
 
-            ctx.drawImage(newImg, imageX, imageY, newWidth, newHeight);
+            // ctx.drawImage(newImg, imageX, imageY, newWidth, fixWidth);
 
 
             if (lease === "leaseaproperty") {
@@ -222,13 +228,16 @@
                     let color_me = getID("color").value
 
                 } else {
-                    ctx.fillText("WTL | WANT TO LEASE", (canvas.width / 2) + 20, 200);
+
                     let color_me = getID("color").value
                     color_me = color_me.toString().startsWith("#") ? color_me : "#" + color_me
                     if (exclamation == "yes f") {
-                        ctx.drawImage(img3, 75, 133, 80, 80);
+                        ctx.fillText("WTL | WANT TO LEASE", (canvas.width / 2), 200);
+                        ctx.drawImage(img3, (canvas.width / 2) - 490, 133, 80, 80);
+                        ctx.drawImage(img3, (canvas.width / 2) + 410, 133, 80, 80);
                     } else {
-                        ctx.drawImage(img2, 75, 133, 80, 80);
+                        ctx.fillText("WTL | WANT TO LEASE", (canvas.width / 2) + 20, 200);
+                        ctx.drawImage(img2, (canvas.width / 2) - 465, 133, 80, 80);
                     }
 
                 }
@@ -246,8 +255,8 @@
 
 
                 ctx.fillText("FOR LEASE", (canvas.width / 2), 200);
-                ctx.drawImage(img3, 260, 133, 80, 80);
-                ctx.drawImage(img3, 740, 133, 80, 80)
+                ctx.drawImage(img3, (canvas.width / 2) - 283, 133, 80, 80);
+                ctx.drawImage(img3, (canvas.width / 2) + 200, 133, 80, 80);
 
             } else if (lease === "leasemonarch") {
                 if (glow == "yes") {
@@ -263,9 +272,10 @@
                 } else {
                     ctx.fillText("WTB | WANT TO BUY", (canvas.width / 2) + 20, 200);
                     if (exclamation == "yes f") {
-                        ctx.drawImage(img3, 105, 133, 80, 80);
+                        ctx.drawImage(img3, (canvas.width / 2) - 435, 133, 80, 80);
+                        ctx.drawImage(img3, (canvas.width / 2) + 390, 133, 80, 80);
                     } else {
-                        ctx.drawImage(img2, 105, 133, 80, 80);
+                        ctx.drawImage(img2, (canvas.width / 2) - 430, 133, 80, 80);
                     }
                 }
             } else if (lease === "salemonarch") {
@@ -279,8 +289,8 @@
 
 
                 ctx.fillText("FOR SALE", (canvas.width / 2), 200);
-                ctx.drawImage(img3, 280, 133, 80, 80);
-                ctx.drawImage(img3, 720, 133, 80, 80)
+                ctx.drawImage(img3, (canvas.width / 2) - 263, 133, 80, 80);
+                ctx.drawImage(img3, (canvas.width / 2) + 183, 133, 80, 80);
             }
 
             // Circle center and radius
@@ -313,9 +323,41 @@
             });
         }
 
+        getID("small").addEventListener("click", () => {
+            fixWidth -= 100;
+            generateImg();
+            getImgXHeight(fixWidth)
+        });
+
+        getID("big").addEventListener("click", () => {
+            fixWidth += 100;
+            generateImg();
+            getImgXHeight(fixWidth)
+        });
+        getID("small2").addEventListener("click", () => {
+            fixHeight -= 100;
+            generateImg();
+            getImgYHeight(fixWidth)
+        });
+
+        getID("big2").addEventListener("click", () => {
+            fixHeight += 100;
+            generateImg();
+            getImgYHeight(fixHeight)
+        });
+
+
         function getImgXHeight(fixWidth) {
             getID("heightMonitor").innerHTML = fixWidth
             if (fixWidth >= 1130) {
+                getID("heightMonitor").style.color = "blue"
+            } else {
+                getID("heightMonitor").style.color = "red"
+            }
+        }
+        function getImgYHeight(fixHeight) {
+            getID("heightMonitor").innerHTML = fixHeight
+            if (fixHeight >= 1130) {
                 getID("heightMonitor").style.color = "blue"
             } else {
                 getID("heightMonitor").style.color = "red"
