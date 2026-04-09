@@ -303,9 +303,9 @@
                 ctx.shadowBlur = 10;   // glow color
             }
 
-
+            let font = 45
             ctx.textAlign = "center";
-            ctx.font = "bold 45px light";
+            ctx.font = `bold ${font}px light`;
 
             // Split by line breaks
             const lines = bldg.split('\n');
@@ -318,7 +318,28 @@
             // starting Y position
             const lineHeight = 65;   // space between lines
             lines.forEach(line => {
-                ctx.fillText("• " + toSmartTitleCase(line), canvas.width / 2, y);
+                if (line.includes("**")) {
+                    line = line.toUpperCase()
+                    line = line.split("**")
+                    let ptx = line[0]
+                    let font_weight = "light"
+                    if (ptx.toLowerCase().includes("b")) {
+                        font_weight = "bold"
+                        ptx = ptx.replace("B", "")
+                    }
+                    line = line[1]
+                    ctx.font = `bold ${ptx}px ${font_weight}`;
+                    ctx.fillText(line, canvas.width / 2, y);
+                    ctx.font = `bold ${font}px light`;
+                }
+
+                else {
+                    line = toSmartTitleCase(line)
+                    ctx.fillText(line, canvas.width / 2, y);
+                }
+
+
+
                 y += lineHeight;
             });
         }
