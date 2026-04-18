@@ -1,267 +1,289 @@
 <!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Viewing Request Card Generator</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f6f8;
-            padding: 16px;
-            margin: 0;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        background: #f5f6f8;
+        padding: 16px;
+        margin: 0;
+      }
 
-        .container {
-            max-width: 520px;
-            width: 100%;
-            flex-direction: column;
-            margin: auto;
-            background: #fff;
-            padding: 16px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      .container {
+        max-width: 520px;
+        width: 100%;
+        flex-direction: column;
+        margin: auto;
+        background: #fff;
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      }
+
+      h2 {
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: block;
+        margin-top: 12px;
+        font-weight: 600;
+      }
+
+      input,
+      textarea {
+        width: 100%;
+        margin-top: 6px;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      textarea {
+        resize: vertical;
+      }
+
+      button {
+        margin-top: 16px;
+        padding: 14px;
+        width: 100%;
+        border: none;
+        border-radius: 10px;
+        background: #3b82f6;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #2563eb;
+      }
+
+      .top {
+        display: flex;
+        gap: 12px;
+        width: 100%;
+      }
+
+      .left,
+      .right {
+        width: 100%;
+      }
+
+      .card {
+        margin-top: 24px;
+        padding: 16px;
+        border-radius: 12px;
+        background: #f9fafb;
+        border: 1px dashed #cbd5e1;
+        cursor: pointer;
+        white-space: pre-line;
+        font-size: 14px;
+      }
+
+      .hint {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 6px;
+        text-align: center;
+      }
+
+      /* 📱 Mobile responsiveness */
+      @media (max-width: 480px) {
+        .top {
+          flex-direction: column;
+          gap: 0;
         }
 
         h2 {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
-            margin-top: 12px;
-            font-weight: 600;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            margin-top: 6px;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-            box-sizing: border-box;
-        }
-
-        textarea {
-            resize: vertical;
+          font-size: 18px;
+          text-align: center;
         }
 
         button {
-            margin-top: 16px;
-            padding: 14px;
-            width: 100%;
-            border: none;
-            border-radius: 10px;
-            background: #3b82f6;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
+          font-size: 15px;
         }
-
-        button:hover {
-            background: #2563eb;
-        }
-
-        .top {
-            display: flex;
-            gap: 12px;
-            width: 100%;
-        }
-
-        .left,
-        .right {
-            width: 100%;
-        }
-
-        .card {
-            margin-top: 24px;
-            padding: 16px;
-            border-radius: 12px;
-            background: #f9fafb;
-            border: 1px dashed #cbd5e1;
-            cursor: pointer;
-            white-space: pre-line;
-            font-size: 14px;
-        }
-
-        .hint {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 6px;
-            text-align: center;
-        }
-
-        /* 📱 Mobile responsiveness */
-        @media (max-width: 480px) {
-            .top {
-                flex-direction: column;
-                gap: 0;
-            }
-
-            h2 {
-                font-size: 18px;
-                text-align: center;
-            }
-
-            button {
-                font-size: 15px;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container">
-        
-        <h2>Viewing Request Generator</h2>
-        <div class="top">
-            <div class="left">
-                <label>Building</label>
-                <input id="building" placeholder="Bellagio" />
-            </div>
-
-            <div class="right">
-                <label>Unit (BR)</label>
-                <input id="unit" placeholder="2" />
-            </div>
-        </div>
-        <div class="top">
-            <div class="left">
-                <label>Date</label>
-                <input id="date" type="date" />
-            </div>
-            <div class="right">
-                <label>Time</label>
-                <input id="time" type="time" />
-            </div>
+      <h2>Viewing Request Generator</h2>
+      <div class="top">
+        <div class="left">
+          <label>Building</label>
+          <input id="building" placeholder="Bellagio" />
         </div>
 
-        <label>Client Details</label>
-        <textarea id="client" rows="3" placeholder="Name: Tom"></textarea>
-        <label>Owner Number</label>
-        <input id="owner" />
-
-        <button onclick="generate()">Generate Card</button>
-
-        <div id="card" class="card" onclick="copyCard()" style="display: none"></div>
-        <div class="hint" id="hint" style="display: none">
-            Click the card to copy
+        <div class="right">
+          <label>Unit (BR)</label>
+          <input id="unit" placeholder="2" />
         </div>
+      </div>
+      <div class="top">
+        <div class="left">
+          <label>Date</label>
+          <input id="date" type="date" />
+        </div>
+        <div class="right">
+          <label>Time</label>
+          <input id="time" type="time" />
+        </div>
+      </div>
+      <div class="top">
+        <div class="left">
+          <label>Price</label>
+          <input id="price" />
+        </div>
+      </div>
+
+      <label>Client Details</label>
+      <textarea id="client" rows="3" placeholder="Name: Tom"></textarea>
+      <label>Owner Number</label>
+      <input id="owner" />
+
+      <button onclick="generate()">Generate Card</button>
+
+      <div
+        id="card"
+        class="card"
+        onclick="copyCard()"
+        style="display: none"
+      ></div>
+      <div class="hint" id="hint" style="display: none">
+        Click the card to copy
+      </div>
     </div>
 
     <script>
-        function getGreeting() {
-            const hour = new Date().getHours(); // gets the hour (0-23)
+      function getGreeting() {
+        const hour = new Date().getHours(); // gets the hour (0-23)
 
-            if (hour < 12) return "Good morning";
-            if (hour < 18) return "Good afternoon";
-            return "Good evening";
-        }
+        if (hour < 12) return "Good morning";
+        if (hour < 18) return "Good afternoon";
+        return "Good evening";
+      }
 
-        function formatDate(value) {
-            if (!value) return "";
-            const d = new Date(value);
-            return d.toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-            });
-        }
-        window.addEventListener("DOMContentLoaded", () => {
-            document.getElementById("time").value = "01:00";
+      function formatDate(value) {
+        if (!value) return "";
+        const d = new Date(value);
+        return d.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
         });
-        function generate() {
-            const building = titleCase(
-                document.getElementById("building").value,
-            ).trim();
-            let unit = document.getElementById("unit").value.trim();
-            unit = unit.toLowerCase()=="studio"?"Studio":unit+"BR"
-            const date = document.getElementById("date").value.trim();
-            const time = formatTime12(document.getElementById("time").value.trim());
-            const client = document.getElementById("client").value.trim();
-            const owner = converter_number(
-                document.getElementById("owner").value.trim(),
-            );
-            if (
-                building == "" ||
-                unit == "" ||
-                date == "" ||
-                time == "" ||
-                client == ""
-            ) {
-                alert("Input Details");
-                return;
-            }
-            let day =new Date(date).toLocaleDateString("en-US", {
-                weekday: "long"
-            });
-
-            const greeting = getGreeting(time);
-
-            let current_date = new Date(diff_days())
-            let possible_date = new Date(date)
-            let diff = (possible_date-current_date) / (1000 * 60 * 60 * 24);
-            if(diff>1 && diff<2){
-                day ="Tomorrow"
-            }
-
-
-            const text = `${greeting}! I am writing to kindly request a viewing appointment for your ${unit} unit at ${building} with the following details:\n\n𝗩𝗶𝗲𝘄𝗶𝗻𝗴 𝗦𝗰𝗵𝗲𝗱𝘂𝗹𝗲:\n𝗗𝗮𝘁𝗲: ${formatDate(date)} (${day})\n𝗧𝗶𝗺𝗲: ${time}\n────────────────\n\n𝗩𝗶𝗲𝘄𝗶𝗻𝗴 𝗖𝗹𝗶𝗲𝗻𝘁:\n${client}\n────────────────\n\n𝗔𝘀𝘀𝗶𝗴𝗻𝗲𝗱 𝗔𝗴𝗲𝗻𝘁:\nMs. Jen\n\nPlease let me know once the viewing request is confirmed. Thank you very much ☺️`;
-            document.getElementById("owner").value = owner;
-            const card = document.getElementById("card");
-            card.textContent = text;
-            card.style.display = "block";
-            document.getElementById("hint").style.display = "block";
+      }
+      window.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("time").value = "01:00";
+      });
+      function generate() {
+        const building = titleCase(
+          document.getElementById("building").value,
+        ).trim();
+        let unit = document.getElementById("unit").value.trim();
+        unit = unit.toLowerCase() == "studio" ? "Studio" : unit + "BR";
+        const date = document.getElementById("date").value.trim();
+        const time = formatTime12(document.getElementById("time").value.trim());
+        const client = document.getElementById("client").value.trim();
+        let price = document.getElementById("price").value.trim();
+        if (!String(price).toLowerCase().includes("m")) {
+          price = parseInt(price.replace(/,/g, ""), 10);
+        } else {
+          price = price.toUpperCase();
         }
-        function titleCase(str) {
-            return str.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+        let status = "";
+        if (price <= 1000000 && !String(price).toLowerCase().includes("m")) {
+          price = toK(price);
+          status = `for lease priced at ₱${price}`;
+        } else {
+          status = `for sale priced at ₱${price}`;
         }
-        function converter_number(number) {
-            val = number.toString().replace(new RegExp(" ", "g"), "").trim();
-            let convert;
-            if (val.length == 9) {
-                convert = BigInt(`0x${val}`).toString(10);
-                convert = convert.padStart(11, "0");
-                convert = convert.replace(/^(\d{4})(\d{3})(\d{4})$/, "$1 $2 $3");
-
-                return convert;
-            } else {
-                return number;
-            }
+        const owner = converter_number(
+          document.getElementById("owner").value.trim(),
+        );
+        if (
+          building == "" ||
+          unit == "" ||
+          date == "" ||
+          time == "" ||
+          client == ""
+        ) {
+          alert("Input Details");
+          return;
         }
-function diff_days(){
-    let date = new Date()
-    let current =  new Date(
-        date.getFullYear(),
-        date.getMonth(),
-        date.getDate()
+        let day = new Date(date).toLocaleDateString("en-US", {
+          weekday: "long",
+        });
 
-    )
-    return current
-}
-        function copyCard() {
-            const text = document.getElementById("card").textContent;
-            navigator.clipboard.writeText(text);
-            document.getElementById("hint").textContent = "Copied to clipboard ✔";
+        const greeting = getGreeting(time);
+
+        let current_date = new Date(diff_days());
+        let possible_date = new Date(date);
+        let diff = (possible_date - current_date) / (1000 * 60 * 60 * 24);
+        if (diff > 1 && diff < 2) {
+          day = "Tomorrow";
         }
-        function formatTime12(time) {
-            if (!time) return "";
-            let [hour, minute] = time.split(":");
-            hour = parseInt(hour, 10);
 
-            const ampm = hour >= 12 ? "PM" : "AM";
-            hour = hour % 12 || 12;
+        const text = `${greeting}! I am writing to kindly request a viewing appointment for your ${unit} unit at ${building} ${status}, with the following details:\n\n𝗩𝗶𝗲𝘄𝗶𝗻𝗴 𝗦𝗰𝗵𝗲𝗱𝘂𝗹𝗲:\n𝗗𝗮𝘁𝗲: ${formatDate(date)} (${day})\n𝗧𝗶𝗺𝗲: ${time}\n\n𝗩𝗶𝗲𝘄𝗶𝗻𝗴 𝗖𝗹𝗶𝗲𝗻𝘁:\n${client}\n\n𝗔𝘀𝘀𝗶𝗴𝗻𝗲𝗱 𝗔𝗴𝗲𝗻𝘁:\nMs. Jen\n\nPlease let me know once the viewing request is confirmed. Thank you very much ☺️`;
+        document.getElementById("owner").value = owner;
+        const card = document.getElementById("card");
+        card.textContent = text;
+        card.style.display = "block";
+        document.getElementById("hint").style.display = "block";
+      }
+      function titleCase(str) {
+        return str.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+      }
+      function converter_number(number) {
+        val = number.toString().replace(new RegExp(" ", "g"), "").trim();
+        let convert;
+        if (val.length == 9) {
+          convert = BigInt(`0x${val}`).toString(10);
+          convert = convert.padStart(11, "0");
+          convert = convert.replace(/^(\d{4})(\d{3})(\d{4})$/, "$1 $2 $3");
 
-            return `${hour}:${minute} ${ampm}`;
+          return convert;
+        } else {
+          return number;
         }
+      }
+      function diff_days() {
+        let date = new Date();
+        let current = new Date(
+          date.getFullYear(),
+          date.getMonth(),
+          date.getDate(),
+        );
+        return current;
+      }
+      function copyCard() {
+        const text = document.getElementById("card").textContent;
+        navigator.clipboard.writeText(text);
+        document.getElementById("hint").textContent = "Copied to clipboard ✔";
+      }
+      function formatTime12(time) {
+        if (!time) return "";
+        let [hour, minute] = time.split(":");
+        hour = parseInt(hour, 10);
+
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+
+        return `${hour}:${minute} ${ampm}`;
+      }
+      function toK(num) {
+        return num / 1000 + "K";
+      }
     </script>
-</body>
-
+  </body>
 </html>
