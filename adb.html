@@ -211,23 +211,23 @@
         function processPackage() {
             let input = document.getElementById('inputPackage').value;
             let output_txt = document.getElementById('output');
-            let final = []
+            let final = ["start"]
             input = input.split("\n")
             input.forEach((e, i) => {
 
-                if (i % 2 != 0 && i != 0) {
+                if (i % 3 === 1 && i != 0) {
                     final.push(e)
                 }
             });
-
+            final.shift()
             if (input === '') {
                 output.value = 'Please enter a package name first.';
                 return;
             }
             let final_output = []
-            const lines = input.map(e => {
+            const lines = final.map(e => {
 
-                let output = `adb shell cmd appops set ${e} RUN_IN_BACKGROUND ignore,adb shell cmd appops set ${e} RUN_ANY_IN_BACKGROUND ignore,adb shell cmd appops set ${e} WAKE_LOCK ignore,adb shell am set-standby-bucket,adb shell dumpsys deviceidle whitelist -${e},adb shell cmd appops set ${e} FOREGROUND_SERVICE ignore`
+                let output = `adb shell cmd appops set ${e} RUN_IN_BACKGROUND ignore,adb shell cmd appops set ${e} RUN_ANY_IN_BACKGROUND ignore,adb shell cmd appops set ${e} WAKE_LOCK ignore,adb shell dumpsys deviceidle whitelist -${e},adb shell cmd appops set ${e} FOREGROUND_SERVICE ignore`
                 output = output.split(",").map(e => e.trim()).join("\n")
                 final_output.push(output, "")
             })
