@@ -248,7 +248,12 @@
                 })
             })
                 .then(res => res.text())
-                .then(data => alert("Saved to Sheet!"));
+                .then(data => {
+                    alert("Saved to Sheet!")
+
+                    loadLastRow();
+                });
+
         }
         document.getElementById("output").addEventListener("click", function () {
             this.select();
