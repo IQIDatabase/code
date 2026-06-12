@@ -143,7 +143,8 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbxK0JUtjD8wMcs27QqRGC1T-4XSPN9_lGPF8h3h3Eh2CWwWDlxOwjKqK0Wag4-nQUdn/exec";
 
         async function encode() {
-            const text = document.getElementById("text").value;
+            let text = document.getElementById("text").value;
+            text = text.replace("@", "").trim()
             if (!text) return;
 
             document.getElementById("out").innerText = "Encoding...";
