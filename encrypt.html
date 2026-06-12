@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Encoder</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #111827);
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: #1f2937;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+
+        textarea,
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            background: #111827;
+            color: white;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 10px;
+            background: #3b82f6;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 12px;
+            background: #0b1220;
+            border-radius: 10px;
+            word-break: break-word;
+            min-height: 20px;
+            font-size: 14px;
+        }
+
+        .label {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 8px;
+        }
+
+        .small-btn {
+            width: 100%;
+            margin-top: 10px;
+            background: #10b981;
+        }
+
+        .small-btn:hover {
+            background: #059669;
+        }
+
+        /* 📱 Mobile tweaks */
+        @media (max-width: 480px) {
+            .card {
+                padding: 16px;
+                border-radius: 12px;
+            }
+
+            h2 {
+                font-size: 18px;
+            }
+
+            textarea,
+            input {
+                font-size: 13px;
+                padding: 10px;
+            }
+
+            button {
+                padding: 11px;
+                font-size: 13px;
+            }
+
+            .result {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>🔐 Secure Encoder</h2>
+
+        <div class="label">Text to encode</div>
+        <textarea id="text" placeholder="Enter any text..."></textarea>
+
+        <button onclick="encode()">Encode</button>
+
+        <div class="label">Code to decode</div>
+        <input id="code" placeholder="Enter code...">
+
+        <button onclick="decode()">Decode</button>
+
+        <div class="result" id="out">Result will appear here...</div>
+    </div>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxK0JUtjD8wMcs27QqRGC1T-4XSPN9_lGPF8h3h3Eh2CWwWDlxOwjKqK0Wag4-nQUdn/exec";
+
+        async function encode() {
+            const text = document.getElementById("text").value;
+            if (!text) return;
+
+            document.getElementById("out").innerText = "Encoding...";
+
+            const res = await fetch(`${API_URL}?mode=encode&value=${encodeURIComponent(text)}`);
+            const code = await res.text();
+
+            document.getElementById("out").innerHTML =
+                `Code: <b>${code}</b><br><br>
+        <button class="small-btn" onclick="copy('${code}')">Copy Code</button>`;
+        }
+
+        async function decode() {
+            const code = document.getElementById("code").value;
+            if (!code) return;
+
+            document.getElementById("out").innerText = "Decoding...";
+
+            const res = await fetch(`${API_URL}?mode=decode&value=${encodeURIComponent(code)}`);
+            const text = await res.text();
+
+            document.getElementById("out").innerHTML =
+                `Text:<br><b>${text}</b><br><br>
+        <button class="small-btn" onclick="copy('${text}')">Copy Text</button>`;
+        }
+
+        function copy(val) {
+            navigator.clipboard.writeText(val);
+            alert("Copied!");
+        }
+    </script>
+
+</body>
+
+</html>
