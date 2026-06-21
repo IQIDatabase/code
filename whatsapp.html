@@ -37,8 +37,8 @@
         }
 
         .phone {
-            width: 1490px;
-            height: 944px;
+            width: 990px;
+            height: 644px;
             background: #e5ddd5;
             /* border-radius: 30px; */
             overflow: hidden;
@@ -202,7 +202,13 @@
         let scale = 1;
 
         document.getElementById("out").addEventListener("click", () => {
-            scale = Math.max(0.2, scale - 0.01);
+            scale = Math.max(0.2, scale - 0.05);
+
+            document.getElementById("phone").style.transform = `scale(${scale})`;
+        })
+
+        document.getElementById("in").addEventListener("click", () => {
+            scale = Math.max(0.2, scale + 0.01);
 
             document.getElementById("phone").style.transform = `scale(${scale})`;
         })
