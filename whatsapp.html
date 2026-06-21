@@ -63,6 +63,26 @@
             /* background-image: 'bg.png'; */
             background-size: cover;
             /* background-color: red; */
+            position: relative;
+        }
+
+        .like {
+            /* background-image: url("like.png"); */
+            position: absolute;
+            background-size: cover;
+            width: 15px;
+            height: 15px;
+            bottom: -20px;
+            left: 5px;
+            outline: 2px solid #fdf5f3;
+            padding: 5px 7px;
+            background-color: #fffeff;
+            border-radius: 50%;
+        }
+
+        img {
+            max-width: 100%;
+            width: 100%;
         }
 
         .msg {
@@ -133,7 +153,7 @@
 
 <body>
 
-    <div class="phone">
+    <div class="phone" id="phone">
         <!-- <div class="header">Messages</div> -->
 
         <div class="chat" id="chat">
@@ -144,6 +164,8 @@
             <textarea id="msg" placeholder="Type message..."></textarea>
             <button onclick="sendMsg('me')">Me</button>
             <button onclick="sendMsg('them')">Them</button>
+            <button id="out">Out</button>
+            <button id="in">IN</button>
         </div>
     </div>
 
@@ -156,9 +178,13 @@
             const div = document.createElement("div");
             div.className = "msg " + (type === "me" ? "me" : "them");
             div.textContent = text;
-
+            div.style.position = "relative";
             document.getElementById("chat").appendChild(div);
             input.value = "";
+            const like = document.createElement("div");
+            like.className = "like"
+            like.innerHTML += "<img src='like.png'></img>"
+            div.appendChild(like)
 
             const chat = document.getElementById("chat");
             chat.scrollTop = chat.scrollHeight;
@@ -173,6 +199,14 @@
                 sendMsg('me');
             }
         });
+        let scale = 1;
+
+        document.getElementById("out").addEventListener("click", () => {
+            scale = Math.max(0.2, scale - 0.01);
+
+            document.getElementById("phone").style.transform = `scale(${scale})`;
+        })
+
     </script>
 
 </body>
