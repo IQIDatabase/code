@@ -240,7 +240,7 @@
           day = "Tomorrow";
         }
 
-        const text = `${greeting}! I am writing to kindly request a viewing appointment for your ${unit} unit at ${building} on ${toBold(`${formatDate(date)} (${day})`)} at ${toBold(time)}, with the following client details for your reference:\n\n𝗩𝗶𝗲𝘄𝗶𝗻𝗴 𝗖𝗹𝗶𝗲𝗻𝘁:\n${client}\n• Req ID: ${reqID}\n• Date: ${formatDate(date)} (${day})\n• Time: ${time}\n\n𝗔𝘀𝘀𝗶𝗴𝗻𝗲𝗱 𝗔𝗴𝗲𝗻𝘁:\nMs. Jen\n\nPlease let me know once the viewing request is confirmed. Thank you very much ☺️`;
+        const text = `${greeting}! I am writing to kindly request a viewing appointment for your ${unit} unit at ${building} on ${toBold(`${formatDate(date)} (${day})`)} at ${toBold(time)}, with the following client details for your reference:\n\n𝗩𝗶𝗲𝘄𝗶𝗻𝗴 𝗖𝗹𝗶𝗲𝗻𝘁:\n${client}\n• Date: ${formatDate(date)} (${day})\n• Time: ${time}\n\n𝗔𝘀𝘀𝗶𝗴𝗻𝗲𝗱 𝗔𝗴𝗲𝗻𝘁:\n𝗡𝗮𝗺𝗲: Ms. Jen\n𝗥𝗲𝗾 𝗜𝗗: ${reqID}\n\nPlease let me know once the viewing request is confirmed. Thank you very much ☺️`;
         document.getElementById("owner").value = owner;
         const card = document.getElementById("card");
         card.textContent = text;
